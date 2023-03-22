@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.AddressMapper">
+    <update id="updateById">
+        update address set link_user = #{linkUser}, link_address = #{linkAddress}, link_phone = #{linkPhone}, user_id = #{userId} where id = #{id}
+    </update>
+
+    <select id="getUserOptions" resultType="com.example.springboot.controller.options.UserOptions">
+        SELECT DISTINCT nick_name, user_id FROM address INNER JOIN user ON address.user_id = user.id
+    </select>
+    <delete id="deleteById">
+        delete from address where id = #{id}
+    </delete>
+
+    <select id="listAddress" resultType="com.example.springboot.entity.Address">
+        select * from address order by id desc
+    </select>
+
+    <select id="listByCondition" resultType="com.example.springboot.entity.Address">
+        select * from address
+        <where>
+            <if test="linkUser != null and linkUser != ''">
+                link_user like concat('%',#{linkUser},'%')
+            </if>
+            <if test="linkPhone != null and linkPhone != ''">
+                link_phone like concat('%',#{linkPhone},'%')
+            </if>
+        </where>
+        order by id asc
+    </select>
+
+    <insert id="save">
+        insert into address(link_user, link_address, link_phone, user_id) values(#{linkUser}, #{linkAddress}, #{linkPhone}, #{userId})
+    </insert>
+
+    <select id="getById" resultType="com.example.springboot.entity.Address">
+        select * from address where id = #{id}
+    </select>
+
+</mapper>

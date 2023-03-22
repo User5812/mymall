@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.GoodsMapper">
+    <update id="updateById">
+        update goods set name=#{name}, description=#{description}, no=#{no}, price=#{price}, discount=#{discount}, store=#{store},
+                         praise=#{praise}, sales=#{sales}, category_id=#{categoryId}, imgs=#{imgs}, recommend=#{recommend},
+                         status=#{status} where id=#{id}
+    </update>
+
+    <select id="sales" resultType="com.example.springboot.entity.Goods">
+        select * from goods order by sales desc limit 5
+    </select>
+
+    <delete id="deleteById">
+        delete from goods where id = #{id}
+    </delete>
+
+    <select id="listGoodss" resultType="com.example.springboot.entity.Goods">
+        select * from goods
+    </select>
+
+    <select id="listByCondition" resultType="com.example.springboot.entity.Goods">
+        select * from goods
+            <where>
+                <if test="name != null and name != ''">
+                    name like concat('%',#{name},'%')
+                </if>
+                <if test="categoryId != null and categoryId != ''">
+                    category_id = #{categoryId}
+                </if>
+                <if test="recommend != null and recommend != ''">
+                    recommend = #{recommend}
+                </if>
+            </where>
+        order by id asc
+    </select>
+
+    <insert id="save">
+        insert into goods(name, description, no, price, discount, store, category_id, imgs, recommend, status)
+        values(#{name}, #{description}, #{no}, #{price}, #{discount}, #{store}, #{categoryId}, #{imgs}, #{recommend}, #{status})
+    </insert>
+
+    <select id="getById" resultType="com.example.springboot.entity.Goods">
+        select * from goods where id = #{id}
+    </select>
+
+    <select id="getOption" resultType="com.example.springboot.entity.Category">
+        select * from category
+    </select>
+
+</mapper>
